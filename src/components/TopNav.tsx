@@ -1,8 +1,19 @@
 import React from 'react';
 import { useSecurity } from '../context/SecurityContext';
-import { ShieldAlert, Zap, AlertTriangle, RefreshCw } from 'lucide-react';
+import { ShieldAlert, Zap, AlertTriangle, RefreshCw, Smartphone, Sun, Lock } from 'lucide-react';
+import { PWAInstallButton } from './PWAInstallButton';
 
-export const TopNav: React.FC = () => {
+interface TopNavProps {
+  onOpenInstagram: () => void;
+  onOpenDeviceLock: () => void;
+  isWakeLockActive: boolean;
+}
+
+export const TopNav: React.FC<TopNavProps> = ({
+  onOpenInstagram,
+  onOpenDeviceLock,
+  isWakeLockActive,
+}) => {
   const { 
     activeTab, 
     setActiveTab, 
@@ -28,7 +39,7 @@ export const TopNav: React.FC = () => {
         </a>
 
         {/* Zone 2: Navigation Links for Desktop & Laptop */}
-        <nav className="hidden md:flex items-center gap-5 text-sm font-medium text-slate-400">
+        <nav className="hidden lg:flex items-center gap-4 text-sm font-medium text-slate-400">
           <button
             onClick={() => setActiveTab('recovery')}
             className={`transition-colors hover:text-white whitespace-nowrap cursor-pointer py-1 ${
@@ -75,7 +86,7 @@ export const TopNav: React.FC = () => {
               activeTab === 'maintenance' ? 'text-cyan-400 font-semibold border-b-2 border-cyan-400' : ''
             }`}
           >
-            リモートメンテナンス
+            リモートメンテ
           </button>
           <button
             onClick={() => setActiveTab('audit_logs')}
@@ -87,25 +98,48 @@ export const TopNav: React.FC = () => {
           </button>
         </nav>
 
-        {/* Zone 3: 1-2 primary actions */}
-        <div className="flex items-center gap-2 sm:gap-3">
-          {/* Incident Simulator Button */}
+        {/* Zone 3: Actions + Instagram + Device Lock + PWA */}
+        <div className="flex items-center gap-2 sm:gap-2.5">
+          {/* Instagram Quick Launcher */}
           <button
-            onClick={() => simulateLockoutIncident(selectedSite.id)}
-            title="管理画面ロックと不正アクセス障害を再現し、暗号化ルートからの復旧フローをテストします"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-amber-300 bg-amber-950/40 border border-amber-800/60 rounded-lg hover:bg-amber-900/50 transition-colors whitespace-nowrap cursor-pointer"
+            onClick={onOpenInstagram}
+            title="サイトからInstagramへアクセス・アカウント連携"
+            className="inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-semibold text-white bg-gradient-to-r from-amber-600 via-rose-600 to-purple-600 hover:opacity-90 rounded-lg shadow-sm shadow-pink-900/40 transition-all cursor-pointer whitespace-nowrap"
           >
-            <AlertTriangle className="w-3.5 h-3.5" />
-            <span className="hidden xs:inline">ロック障害を再現</span>
-            <span className="xs:hidden">障害再現</span>
+            <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+            </svg>
+            <span className="hidden sm:inline">Instagram</span>
           </button>
+
+          {/* Device & Screen Lock Control */}
+          <button
+            onClick={onOpenDeviceLock}
+            title="デバイス画面ロック防止・PWA常時点灯＆アプリPINロック制御"
+            className={`inline-flex items-center gap-1 px-2.5 py-1.5 text-xs font-medium rounded-lg border transition-all cursor-pointer whitespace-nowrap ${
+              isWakeLockActive 
+                ? 'bg-amber-950/50 text-amber-300 border-amber-700/60 shadow-sm shadow-amber-900/30' 
+                : 'bg-slate-900/80 text-slate-300 border-slate-700 hover:border-slate-500'
+            }`}
+          >
+            <Smartphone className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">端末ロック制御</span>
+            {isWakeLockActive && (
+              <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" title="画面ロック防止中" />
+            )}
+          </button>
+
+          {/* PWA Install Button */}
+          <PWAInstallButton />
 
           {/* Quick Emergency Route Action */}
           {!isRouteConnected ? (
             <button
               onClick={() => connectEmergencyRoute(selectedSite.id)}
               disabled={isConnectingEmergencyRoute}
-              className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold text-white rounded-lg transition-all whitespace-nowrap cursor-pointer ${
+              className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-white rounded-lg transition-all whitespace-nowrap cursor-pointer ${
                 isLocked 
                   ? 'bg-rose-600 hover:bg-rose-500 shadow-sm shadow-rose-900/40 animate-pulse' 
                   : 'bg-cyan-600 hover:bg-cyan-500 shadow-sm shadow-cyan-900/40'
@@ -114,19 +148,19 @@ export const TopNav: React.FC = () => {
               {isConnectingEmergencyRoute ? (
                 <>
                   <RefreshCw className="w-3.5 h-3.5 animate-spin" />
-                  <span>確立中...</span>
+                  <span className="hidden sm:inline">確立中...</span>
                 </>
               ) : (
                 <>
                   <Zap className="w-3.5 h-3.5" />
-                  <span>暗号ルート接続</span>
+                  <span className="hidden sm:inline">暗号ルート</span>
                 </>
               )}
             </button>
           ) : (
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 text-xs font-mono text-emerald-300 bg-emerald-950/40 border border-emerald-800/60 rounded-lg whitespace-nowrap">
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-mono text-emerald-300 bg-emerald-950/40 border border-emerald-800/60 rounded-lg whitespace-nowrap">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-              <span>暗号化ルート接続中</span>
+              <span className="hidden sm:inline">暗号ルート接続中</span>
             </div>
           )}
         </div>

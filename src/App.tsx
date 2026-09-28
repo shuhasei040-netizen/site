@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { SecurityProvider, useSecurity } from './context/SecurityContext';
 import { TopNav } from './components/TopNav';
 import { SiteHeaderBar } from './components/SiteHeaderBar';
@@ -9,6 +9,10 @@ import { AgentDeployView } from './components/AgentDeployView';
 import { RemoteMaintenanceView } from './components/RemoteMaintenanceView';
 import { AuditLogView } from './components/AuditLogView';
 import { SiteSetupView } from './components/SiteSetupView';
+import { InstagramModal } from './components/InstagramModal';
+import { DeviceLockModal } from './components/DeviceLockModal';
+import { AppLockScreen } from './components/AppLockScreen';
+import { useDeviceLock } from './hooks/useDeviceLock';
 import { ShieldCheck, Lock, Radio, Terminal, FileCode, Clock } from 'lucide-react';
 
 const MainContent: React.FC = () => {
@@ -34,11 +38,32 @@ const MainContent: React.FC = () => {
 };
 
 export default function App() {
+  const [isInstagramOpen, setIsInstagramOpen] = useState(false);
+  const [isDeviceLockOpen, setIsDeviceLockOpen] = useState(false);
+
+  const {
+    config,
+    updateConfig,
+    wakeLockSupported,
+    isWakeLockActive,
+    toggleWakeLock,
+    isAppLocked,
+    lockAppNow,
+    unlockApp,
+  } = useDeviceLock();
+
   return (
     <SecurityProvider>
       <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans">
-        {/* Top Navigation conforming to Top Bar Contract */}
-        <TopNav />
+        {/* Full App Security Lock Screen when triggered */}
+        {isAppLocked && <AppLockScreen onUnlock={unlockApp} />}
+
+        {/* Top Navigation conforming to Top Bar Contract with Instagram & Device Lock */}
+        <TopNav 
+          onOpenInstagram={() => setIsInstagramOpen(true)}
+          onOpenDeviceLock={() => setIsDeviceLockOpen(true)}
+          isWakeLockActive={isWakeLockActive}
+        />
 
         {/* Target Site Selector & Unboxed Metadata Header */}
         <SiteHeaderBar />
@@ -47,6 +72,24 @@ export default function App() {
         <div className="flex-1">
           <MainContent />
         </div>
+
+        {/* Instagram Access & Integration Modal */}
+        <InstagramModal 
+          isOpen={isInstagramOpen} 
+          onClose={() => setIsInstagramOpen(false)} 
+        />
+
+        {/* Device Screen Lock & App Lock Settings Modal */}
+        <DeviceLockModal
+          isOpen={isDeviceLockOpen}
+          onClose={() => setIsDeviceLockOpen(false)}
+          config={config}
+          updateConfig={updateConfig}
+          isWakeLockActive={isWakeLockActive}
+          wakeLockSupported={wakeLockSupported}
+          toggleWakeLock={toggleWakeLock}
+          lockAppNow={lockAppNow}
+        />
 
         {/* Clean, Non-ornamental Footer */}
         <footer className="border-t border-slate-900 bg-slate-950/80 py-6 text-xs text-slate-500">
@@ -57,6 +100,20 @@ export default function App() {
               <span>緊急暗号化ルート接続＆高セキュリティ・リモートメンテナンス管理基盤</span>
             </div>
             <div className="flex items-center gap-4 text-slate-400">
+              <button
+                onClick={() => setIsInstagramOpen(true)}
+                className="hover:text-pink-400 transition-colors cursor-pointer flex items-center gap-1"
+              >
+                <span>Instagram連携</span>
+              </button>
+              <span>·</span>
+              <button
+                onClick={() => setIsDeviceLockOpen(true)}
+                className="hover:text-cyan-400 transition-colors cursor-pointer flex items-center gap-1"
+              >
+                <span>画面スリープ・端末ロック制御</span>
+              </button>
+              <span>·</span>
               <button 
                 onClick={() => {
                   const evt = new CustomEvent('open_audit_tab');
@@ -66,10 +123,6 @@ export default function App() {
               >
                 暗号化監査証跡 (Audit Logs)
               </button>
-              <span>·</span>
-              <span>Mutual TLS 1.3 / Ed25519</span>
-              <span>·</span>
-              <span>ゼロトラスト運用準拠</span>
             </div>
           </div>
         </footer>
@@ -77,3 +130,4 @@ export default function App() {
     </SecurityProvider>
   );
 }
+
