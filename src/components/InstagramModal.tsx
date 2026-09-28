@@ -117,6 +117,29 @@ export const InstagramModal: React.FC<InstagramModalProps> = ({ isOpen, onClose 
         {/* Tab 1: Quick Access */}
         {activeTab === 'quick' && (
           <div className="space-y-3.5">
+            {/* In-App Sentinel Full View Switcher Button */}
+            <button
+              onClick={() => {
+                onClose();
+                window.dispatchEvent(new CustomEvent('open_instagram_tab'));
+              }}
+              className="w-full flex items-center justify-between p-3 rounded-xl bg-gradient-to-r from-pink-950/60 to-purple-950/60 border border-pink-700/60 hover:border-pink-500 text-white font-semibold transition-all group cursor-pointer"
+            >
+              <div className="flex items-center gap-2.5">
+                <div className="p-1.5 rounded-lg bg-pink-500/20 text-pink-400 group-hover:scale-110 transition-transform">
+                  <Globe className="w-4 h-4" />
+                </div>
+                <div className="text-left">
+                  <div className="text-xs font-semibold text-white flex items-center gap-1.5">
+                    AEGIS SENTINEL 画面内ブラウザで開く
+                    <Sparkles className="w-3 h-3 text-amber-400" />
+                  </div>
+                  <div className="text-[10px] text-slate-400 font-normal">アプリのメイン作業エリアに内蔵ブラウザを展開</div>
+                </div>
+              </div>
+              <span className="text-[10px] px-2 py-0.5 rounded-md bg-pink-600 text-white">開く</span>
+            </button>
+
             {/* Direct Open Master Button */}
             <button
               onClick={() => openUrl('https://www.instagram.com/')}

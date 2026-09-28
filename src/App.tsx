@@ -9,6 +9,7 @@ import { AgentDeployView } from './components/AgentDeployView';
 import { RemoteMaintenanceView } from './components/RemoteMaintenanceView';
 import { AuditLogView } from './components/AuditLogView';
 import { SiteSetupView } from './components/SiteSetupView';
+import { InstagramView } from './components/InstagramView';
 import { InstagramModal } from './components/InstagramModal';
 import { DeviceLockModal } from './components/DeviceLockModal';
 import { AppLockScreen } from './components/AppLockScreen';
@@ -24,6 +25,12 @@ const MainContent: React.FC = () => {
     return () => window.removeEventListener('open_audit_tab', handler);
   }, [setActiveTab]);
 
+  React.useEffect(() => {
+    const handler = () => setActiveTab('instagram');
+    window.addEventListener('open_instagram_tab', handler);
+    return () => window.removeEventListener('open_instagram_tab', handler);
+  }, [setActiveTab]);
+
   return (
     <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       {activeTab === 'recovery' && <IncidentRecoveryView />}
@@ -33,6 +40,7 @@ const MainContent: React.FC = () => {
       {activeTab === 'agent_deploy' && <AgentDeployView />}
       {activeTab === 'maintenance' && <RemoteMaintenanceView />}
       {activeTab === 'audit_logs' && <AuditLogView />}
+      {activeTab === 'instagram' && <InstagramView />}
     </main>
   );
 };

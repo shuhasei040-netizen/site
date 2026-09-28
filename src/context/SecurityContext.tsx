@@ -8,11 +8,11 @@ interface SecurityContextType {
   selectedSite: TargetSite;
   vulnerabilities: SecurityVulnerability[];
   auditLogs: AuditLogEntry[];
-  activeTab: 'emergency_route' | 'recovery' | 'vulnerabilities' | 'agent_deploy' | 'maintenance' | 'audit_logs' | 'site_setup';
+  activeTab: 'emergency_route' | 'recovery' | 'vulnerabilities' | 'agent_deploy' | 'maintenance' | 'audit_logs' | 'site_setup' | 'instagram';
   isConnectingEmergencyRoute: boolean;
   isSimulatingRecovery: boolean;
   selectSite: (siteId: string) => void;
-  setActiveTab: (tab: 'emergency_route' | 'recovery' | 'vulnerabilities' | 'agent_deploy' | 'maintenance' | 'audit_logs' | 'site_setup') => void;
+  setActiveTab: (tab: 'emergency_route' | 'recovery' | 'vulnerabilities' | 'agent_deploy' | 'maintenance' | 'audit_logs' | 'site_setup' | 'instagram') => void;
   connectEmergencyRoute: (siteId?: string) => Promise<void>;
   disconnectEmergencyRoute: (siteId?: string) => void;
   neutralizeVulnerability: (vulnId: string) => void;
@@ -52,7 +52,7 @@ export const SecurityProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
   const [vulnerabilities, setVulnerabilities] = useState<SecurityVulnerability[]>(INITIAL_VULNERABILITIES);
   const [auditLogs, setAuditLogs] = useState<AuditLogEntry[]>(INITIAL_AUDIT_LOGS);
-  const [activeTab, setActiveTab] = useState<'emergency_route' | 'recovery' | 'vulnerabilities' | 'agent_deploy' | 'maintenance' | 'audit_logs' | 'site_setup'>('recovery');
+  const [activeTab, setActiveTab] = useState<'emergency_route' | 'recovery' | 'vulnerabilities' | 'agent_deploy' | 'maintenance' | 'audit_logs' | 'site_setup' | 'instagram'>('recovery');
   const [isConnectingEmergencyRoute, setIsConnectingEmergencyRoute] = useState(false);
   const [isSimulatingRecovery, setIsSimulatingRecovery] = useState(false);
 

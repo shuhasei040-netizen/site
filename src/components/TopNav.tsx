@@ -96,15 +96,28 @@ export const TopNav: React.FC<TopNavProps> = ({
           >
             監査ログ
           </button>
+          <button
+            onClick={() => setActiveTab('instagram')}
+            className={`transition-colors hover:text-pink-300 whitespace-nowrap cursor-pointer py-1 flex items-center gap-1 ${
+              activeTab === 'instagram' ? 'text-pink-400 font-semibold border-b-2 border-pink-400' : ''
+            }`}
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-pink-500 animate-pulse" />
+            <span>Instagram</span>
+          </button>
         </nav>
 
         {/* Zone 3: Actions + Instagram + Device Lock + PWA */}
         <div className="flex items-center gap-2 sm:gap-2.5">
           {/* Instagram Quick Launcher */}
           <button
-            onClick={onOpenInstagram}
-            title="サイトからInstagramへアクセス・アカウント連携"
-            className="inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-semibold text-white bg-gradient-to-r from-amber-600 via-rose-600 to-purple-600 hover:opacity-90 rounded-lg shadow-sm shadow-pink-900/40 transition-all cursor-pointer whitespace-nowrap"
+            onClick={() => setActiveTab('instagram')}
+            title="AEGIS SENTINEL内でInstagramの本当のサイトを開く"
+            className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-semibold text-white rounded-lg shadow-sm transition-all cursor-pointer whitespace-nowrap ${
+              activeTab === 'instagram'
+                ? 'bg-gradient-to-r from-amber-500 via-rose-500 to-purple-600 ring-2 ring-pink-400 shadow-pink-900/60'
+                : 'bg-gradient-to-r from-amber-600 via-rose-600 to-purple-600 hover:opacity-90 shadow-pink-900/40'
+            }`}
           >
             <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
@@ -223,6 +236,14 @@ export const TopNav: React.FC<TopNavProps> = ({
           }`}
         >
           監査ログ
+        </button>
+        <button
+          onClick={() => setActiveTab('instagram')}
+          className={`whitespace-nowrap px-2.5 py-1 rounded-md transition-colors cursor-pointer ${
+            activeTab === 'instagram' ? 'bg-gradient-to-r from-amber-600 via-rose-600 to-purple-600 text-white font-bold' : 'text-pink-400 hover:text-white'
+          }`}
+        >
+          Instagram
         </button>
       </div>
     </header>
