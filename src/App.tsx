@@ -41,6 +41,12 @@ export default function App() {
   const [isInstagramOpen, setIsInstagramOpen] = useState(false);
   const [isDeviceLockOpen, setIsDeviceLockOpen] = useState(false);
 
+  React.useEffect(() => {
+    const handleOpenInsta = () => setIsInstagramOpen(true);
+    window.addEventListener('open_instagram_modal', handleOpenInsta);
+    return () => window.removeEventListener('open_instagram_modal', handleOpenInsta);
+  }, []);
+
   const {
     config,
     updateConfig,
@@ -56,7 +62,12 @@ export default function App() {
     <SecurityProvider>
       <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans">
         {/* Full App Security Lock Screen when triggered */}
-        {isAppLocked && <AppLockScreen onUnlock={unlockApp} />}
+        {isAppLocked && (
+          <AppLockScreen 
+            onUnlock={unlockApp} 
+            onOpenInstagram={() => setIsInstagramOpen(true)} 
+          />
+        )}
 
         {/* Top Navigation conforming to Top Bar Contract with Instagram & Device Lock */}
         <TopNav 

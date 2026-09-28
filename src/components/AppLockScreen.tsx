@@ -3,9 +3,10 @@ import { ShieldAlert, Lock, Unlock, KeyRound, AlertTriangle } from 'lucide-react
 
 interface AppLockScreenProps {
   onUnlock: (pin: string) => boolean;
+  onOpenInstagram: () => void;
 }
 
-export const AppLockScreen: React.FC<AppLockScreenProps> = ({ onUnlock }) => {
+export const AppLockScreen: React.FC<AppLockScreenProps> = ({ onUnlock, onOpenInstagram }) => {
   const [pin, setPin] = useState<string>('');
   const [error, setError] = useState<boolean>(false);
 
@@ -117,7 +118,38 @@ export const AppLockScreen: React.FC<AppLockScreenProps> = ({ onUnlock }) => {
           <span>ロック解除</span>
         </button>
 
-        <p className="text-[10px] text-slate-500 mt-4">
+        {/* Bypass Access: Instagram Quick Launcher even while locked */}
+        <div className="mt-5 pt-4 border-t border-slate-800/80">
+          <div className="text-[11px] text-slate-400 mb-2.5 font-medium flex items-center justify-center gap-1.5">
+            <span>緊急・外部アクセス許可:</span>
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <button
+              type="button"
+              onClick={onOpenInstagram}
+              className="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-amber-600 via-rose-600 to-purple-600 hover:opacity-95 text-white font-semibold text-xs shadow-md shadow-pink-950/40 transition-all flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+              </svg>
+              <span>ロック中でも Instagram を開く</span>
+            </button>
+
+            <a
+              href="https://www.instagram.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="py-1.5 text-[11px] text-pink-400/90 hover:text-pink-300 transition-colors inline-block"
+            >
+              Instagram Web公式サイトを直接開く ↗
+            </a>
+          </div>
+        </div>
+
+        <p className="text-[10px] text-slate-500 mt-3">
           ※初期PINは「1234」です
         </p>
 

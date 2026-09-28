@@ -51,7 +51,7 @@ export const InstagramModal: React.FC<InstagramModalProps> = ({ isOpen, onClose 
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-sm p-4 overflow-y-auto">
+    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/80 backdrop-blur-md p-4 overflow-y-auto">
       <div className="relative w-full max-w-lg rounded-2xl border border-pink-900/40 bg-slate-950 p-6 shadow-2xl shadow-pink-950/20 text-slate-100 animate-in fade-in zoom-in-95 duration-200">
         
         {/* Header with Instagram Gradient Accent */}
