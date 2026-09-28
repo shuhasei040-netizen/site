@@ -1,0 +1,7 @@
+{
+  "name": "AegisRoute Sentinel - 緊急リカバリー＆安全リモートメンテナンス",
+  "description": "サイト管理画面のロック・障害時における検証専用暗号化ルート接続、バックドア検知、迅速な原因無効化および平時リモートメンテナンスプラットフォーム",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
